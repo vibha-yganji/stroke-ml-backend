@@ -13,6 +13,7 @@ import sqlite3
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB
+from sklearn import svm
 
 app = Flask(__name__)
 stroke_api = Blueprint('stroke_api', __name__, url_prefix='/api/stroke')
@@ -44,7 +45,7 @@ class Predict(Resource):
             #passenger_data.drop(['embarked'], axis=1, inplace=True)
             
             # Predict the survival probability for the new passenger
-            stroke_prob = logreg.predict_proba(stroke_data)[:, 1]
+            stroke_prob = gnb.predict_proba(stroke_data)[:, 1]
             #stroke_prob = 1 - survival_prob
 
             return {'chance of stroke': float(stroke_prob * 100)}, 200
@@ -99,5 +100,14 @@ X = stroke_data.drop('stroke', axis=1)
 y = stroke_data['stroke']
 
 # Train the logistic regression model
-logreg = LogisticRegression()
-logreg.fit(X, y)
+#logreg = LogisticRegression()
+#regr = svm.SVR()
+#regr.fit(X, y)
+
+gnb = GaussianNB()
+y_pred = gnb.fit(X, y).predict(X)
+
+#accuracy = accuracy_score(y_test, y_pred)
+#print('Accuracy:', accuracy)
+
+#logreg.fit(X, y)

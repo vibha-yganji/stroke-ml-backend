@@ -56,10 +56,12 @@ y = stroke_data['stroke']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
 # Train a decision tree classifier
-dt = DecisionTreeClassifier()
-dt.fit(X_train, y_train)
-
+#dt = DecisionTreeClassifier()
+#dt.fit(X_train, y_train)
 # Test the model
-y_pred = dt.predict(X_test)
+#y_pred = dt.predict(X_test)
+gnb = GaussianNB()
+y_pred = gnb.fit(X_train, y_train).predict(X_test)
 accuracy = accuracy_score(y_test, y_pred)
 print('Accuracy:', accuracy)
+
