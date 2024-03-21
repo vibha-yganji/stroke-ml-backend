@@ -52,9 +52,9 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_
 #y_pred = dt.predict(X_test)
 
 ## slightly lower accuracies
-X = stroke_data.drop('stroke', axis=1)
-y = stroke_data['stroke']
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+# X = stroke_data.drop('stroke', axis=1)
+# y = stroke_data['stroke']
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
 # Train a decision tree classifier
 #dt = DecisionTreeClassifier()
