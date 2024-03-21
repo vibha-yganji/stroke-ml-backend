@@ -29,13 +29,13 @@ class Predict(Resource):
             #stroke_data['gender'] = stroke_data['gender'].apply(lambda x: 1 if x == 'Male' else 0)
             #passenger_data['alone'] = passenger_data['alone'].apply(lambda x: 1 if x == True else 0)
 
-            stroke_data.drop(['id', 'ever_married', 'work_type'], axis=1, inplace=True)
+            #stroke_data.drop(['id', 'ever_married', 'work_type'], axis=1, inplace=True)
             ## dropping all NA values in dataset
             stroke_data.dropna(inplace=True)
             ## convert all sex values to 0/1 (ML models can only process quantitative data)
             stroke_data['gender'] = stroke_data['gender'].apply(lambda x: 1 if x == 'Male' else 0)
             #stroke_data['heart_disease'] = stroke_data['heart_disease'].apply(lambda x: 1 if x == 'Yes' else 0)
-            stroke_data['Residence_type'] = stroke_data['Residence_type'].apply(lambda x: 1 if x == 'urban' else 0)
+            stroke_data['Residence_type'] = stroke_data['Residence_type'].apply(lambda x: 1 if x == 'Urban' else 0)
             stroke_data['smoking_status'] = stroke_data['smoking_status'].apply(lambda x: 1 if x == 'smoked' else 0)
 
             #onehot = enc.transform(passenger_data[['embarked']]).toarray()
@@ -44,7 +44,7 @@ class Predict(Resource):
             #passenger_data.drop(['embarked'], axis=1, inplace=True)
             
             # Predict the survival probability for the new passenger
-            stroke_prob = logreg.predict_proba(stroke_data)[:, 9]
+            stroke_prob = logreg.predict_proba(stroke_data)[:, 1]
             #stroke_prob = 1 - survival_prob
 
             return {'chance of stroke': float(stroke_prob * 100)}, 200
@@ -67,7 +67,7 @@ stroke_data.dropna(inplace=True)
 
 ## convert all sex values to 0/1 (ML models can only process quantitative data)
 stroke_data['gender'] = stroke_data['gender'].apply(lambda x: 1 if x == 'Male' else 0)
-stroke_data['heart_disease'] = stroke_data['heart_disease'].apply(lambda x: 1 if x == 'Yes' else 0)
+#stroke_data['heart_disease'] = stroke_data['heart_disease'].apply(lambda x: 1 if x == 'Yes' else 0)
 stroke_data['Residence_type'] = stroke_data['Residence_type'].apply(lambda x: 1 if x == 'Urban' else 0)
 stroke_data['smoking_status'] = stroke_data['smoking_status'].apply(lambda x: 1 if x == 'smoked' else 0)
 
