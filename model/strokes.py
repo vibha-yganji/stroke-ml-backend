@@ -10,12 +10,13 @@ from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB
 
 # Load the titanic dataset
+## google drive link was used to allow pandas to access the csv file
 url='https://drive.google.com/file/d/1_lvLY-3rlNZoOkJiCVYZIsXF2eT_swf1/view?usp=sharing'
 url='https://drive.google.com/uc?id=' + url.split('/')[-2]
 stroke_data = pd.read_csv(url)
 
 # Preprocess the data
-
+## dropping the columns not necessary and relevant for the ML analysis
 stroke_data.drop(['id', 'ever_married', 'work_type'], axis=1, inplace=True)
 
 ## dropping all NA values in dataset
@@ -60,8 +61,11 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_
 #dt.fit(X_train, y_train)
 # Test the model
 #y_pred = dt.predict(X_test)
+
+## gaussian naive bayes - a classification technique that can also be used for regression
 gnb = GaussianNB()
 y_pred = gnb.fit(X_train, y_train).predict(X_test)
 accuracy = accuracy_score(y_test, y_pred)
+## accuracy was approximatey 89%
 print('Accuracy:', accuracy)
 

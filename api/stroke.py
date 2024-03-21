@@ -31,6 +31,7 @@ class Predict(Resource):
             #passenger_data['alone'] = passenger_data['alone'].apply(lambda x: 1 if x == True else 0)
 
             #stroke_data.drop(['id', 'ever_married', 'work_type'], axis=1, inplace=True)
+
             ## dropping all NA values in dataset
             stroke_data.dropna(inplace=True)
             ## convert all sex values to 0/1 (ML models can only process quantitative data)
@@ -44,14 +45,16 @@ class Predict(Resource):
             #passenger_data[cols] = pd.DataFrame(onehot)
             #passenger_data.drop(['embarked'], axis=1, inplace=True)
             
-            # Predict the survival probability for the new passenger
+            # Predict the survival probability for the new passenger using a gaussian naive bayes model
             stroke_prob = gnb.predict_proba(stroke_data)[:, 1]
             #stroke_prob = 1 - survival_prob
 
-            return {'chance of stroke': float(stroke_prob * 100)}, 200
+            ## returns a percentage of the chance of stroke for each individual
+            return {'Chance of Stroke': float(stroke_prob * 100)}, 200
         except Exception as e:
             return {'error': str(e)}, 400
 
+## api endpoint
 api.add_resource(Predict, '/predict')
 
 # Load the stroke dataset
@@ -60,7 +63,7 @@ url='https://drive.google.com/uc?id=' + url.split('/')[-2]
 stroke_data = pd.read_csv(url)
 
 # Preprocess the data
-
+## dropping the columns of the dataframe for the id, marriage, and work_type
 stroke_data.drop(['id', 'ever_married', 'work_type'], axis=1, inplace=True)
 
 ## dropping all NA values in dataset
@@ -69,6 +72,8 @@ stroke_data.dropna(inplace=True)
 ## convert all sex values to 0/1 (ML models can only process quantitative data)
 stroke_data['gender'] = stroke_data['gender'].apply(lambda x: 1 if x == 'Male' else 0)
 #stroke_data['heart_disease'] = stroke_data['heart_disease'].apply(lambda x: 1 if x == 'Yes' else 0)
+
+## convert all residence and smoking status values to 0/1 (ML models can only process quantitative data)
 stroke_data['Residence_type'] = stroke_data['Residence_type'].apply(lambda x: 1 if x == 'Urban' else 0)
 stroke_data['smoking_status'] = stroke_data['smoking_status'].apply(lambda x: 1 if x == 'smoked' else 0)
 
@@ -104,6 +109,7 @@ y = stroke_data['stroke']
 #regr = svm.SVR()
 #regr.fit(X, y)
 
+## gaussian naive bayes was tested instead of the original model and it ended up having a slightly lower accuracy
 gnb = GaussianNB()
 y_pred = gnb.fit(X, y).predict(X)
 
