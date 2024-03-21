@@ -10,7 +10,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB
 
 # Load the titanic dataset
-stroke_data = pd.read_csv('/Users/vibhaganji/stroke-ml-backend/healthcare-dataset-stroke-data.csv')
+url='https://drive.google.com/file/d/1_lvLY-3rlNZoOkJiCVYZIsXF2eT_swf1/view?usp=sharing'
+url='https://drive.google.com/uc?id=' + url.split('/')[-2]
+stroke_data = pd.read_csv(url)
 
 # Preprocess the data
 
@@ -21,7 +23,7 @@ stroke_data.dropna(inplace=True)
 
 ## convert all sex values to 0/1 (ML models can only process quantitative data)
 stroke_data['gender'] = stroke_data['gender'].apply(lambda x: 1 if x == 'Male' else 0)
-stroke_data['heart_disease'] = stroke_data['heart_disease'].apply(lambda x: 1 if x == 'Yes' else 0)
+#stroke_data['heart_disease'] = stroke_data['heart_disease'].apply(lambda x: 1 if x == 'Yes' else 0)
 stroke_data['Residence_type'] = stroke_data['Residence_type'].apply(lambda x: 1 if x == 'Urban' else 0)
 stroke_data['smoking_status'] = stroke_data['smoking_status'].apply(lambda x: 1 if x == 'smoked' else 0)
 

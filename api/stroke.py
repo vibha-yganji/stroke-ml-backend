@@ -23,6 +23,7 @@ class Predict(Resource):
         try:
             data = request.get_json()
             stroke_data = pd.DataFrame(data, index=[0])
+            stroke_data.head(5)
             
             # Preprocesssing
             #stroke_data['gender'] = stroke_data['gender'].apply(lambda x: 1 if x == 'Male' else 0)
@@ -33,8 +34,8 @@ class Predict(Resource):
             stroke_data.dropna(inplace=True)
             ## convert all sex values to 0/1 (ML models can only process quantitative data)
             stroke_data['gender'] = stroke_data['gender'].apply(lambda x: 1 if x == 'Male' else 0)
-            stroke_data['heart_disease'] = stroke_data['heart_disease'].apply(lambda x: 1 if x == 'Yes' else 0)
-            stroke_data['Residence_type'] = stroke_data['Residence_type'].apply(lambda x: 1 if x == 'Urban' else 0)
+            #stroke_data['heart_disease'] = stroke_data['heart_disease'].apply(lambda x: 1 if x == 'Yes' else 0)
+            stroke_data['Residence_type'] = stroke_data['Residence_type'].apply(lambda x: 1 if x == 'urban' else 0)
             stroke_data['smoking_status'] = stroke_data['smoking_status'].apply(lambda x: 1 if x == 'smoked' else 0)
 
             #onehot = enc.transform(passenger_data[['embarked']]).toarray()
@@ -43,7 +44,7 @@ class Predict(Resource):
             #passenger_data.drop(['embarked'], axis=1, inplace=True)
             
             # Predict the survival probability for the new passenger
-            stroke_prob = gnb.predict_proba(stroke_data)[:, 1]
+            stroke_prob = logreg.predict_proba(stroke_data)[:, 9]
             #stroke_prob = 1 - survival_prob
 
             return {'chance of stroke': float(stroke_prob * 100)}, 200
@@ -53,7 +54,9 @@ class Predict(Resource):
 api.add_resource(Predict, '/predict')
 
 # Load the stroke dataset
-stroke_data = pd.read_csv('/Users/vibhaganji/stroke-ml-backend/healthcare-dataset-stroke-data.csv')
+url='https://drive.google.com/file/d/1_lvLY-3rlNZoOkJiCVYZIsXF2eT_swf1/view?usp=sharing'
+url='https://drive.google.com/uc?id=' + url.split('/')[-2]
+stroke_data = pd.read_csv(url)
 
 # Preprocess the data
 
